@@ -1,0 +1,10 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"strictNullChecks": true
+	},
+	"exclude": [
+		"node_modules",
+		"Template"
+	]
+}
