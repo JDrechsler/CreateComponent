@@ -1,0 +1,10 @@
+{
+	"devDependencies": {
+		"@types/node": "^7.0.29",
+		"typescript": "^2.3.4"
+	},
+	"dependencies": {
+		"async-file": "^2.0.2",
+		"ncp": "^2.0.0"
+	}
+}
