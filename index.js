@@ -1,4 +1,4 @@
-#! /usr/bin/env node //This is important
+#! /usr/bin/env node
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -50,9 +50,10 @@ if (isTestMode) {
 else {
     console.log("---Normal Mode---");
     args = process.argv; /*?*/
-    args.forEach(function (element) {
-        console.log(element);
-    });
+    // args.forEach(element => {
+    // 	console.log(element)
+    // });
+    // console.log(__dirname)
     if (args.length < 3 || args.length > 3) {
         console.log('Please correct your params.');
         process.exit(1);
@@ -70,7 +71,7 @@ else {
 function createComponent(compName) {
     var componentLocation = executionPath + "/" + componentName; /*?*/
     console.log("Erstellt wird Component " + componentName + " im Ordner " + componentLocation + ".");
-    var source = 'C:\\Template';
+    var source = __dirname + "\\Template";
     copyTemplate(source, componentLocation);
     console.log('Script successfully ended.');
 }

@@ -1,4 +1,4 @@
-#! /usr/bin/env node //This is important
+#! /usr/bin/env node
 import * as fs from 'fs'
 import * as fsa from 'async-file'
 import * as ncp from 'ncp'
@@ -16,9 +16,10 @@ if (isTestMode) {
 } else {
 	console.log("---Normal Mode---")
 	args = process.argv /*?*/
-	args.forEach(element => {
-		console.log(element)
-	});
+	// args.forEach(element => {
+	// 	console.log(element)
+	// });
+	// console.log(__dirname)
 
 	if (args.length < 3 || args.length > 3) {
 		console.log('Please correct your params.')
@@ -39,7 +40,7 @@ if (componentName.match(regCheckCompName)/*?*/) {
 function createComponent(compName: string) {
 	var componentLocation: string = `${executionPath}/${componentName}` /*?*/
 	console.log(`Erstellt wird Component ${componentName} im Ordner ${componentLocation}.`)
-	var source: string = 'C:\\Template'
+	var source: string = `${__dirname}\\Template`
 	copyTemplate(source, componentLocation)
 	console.log('Script successfully ended.')
 }
