@@ -6,5 +6,17 @@
 	"dependencies": {
 		"async-file": "^2.0.2",
 		"ncp": "^2.0.0"
-	}
+	},
+	"name": "createcomponent-master",
+	"version": "1.0.0",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"preferGlobal": true,
+	"author": "JDrechsler",
+	"license": "ISC",
+	"bin": {
+		"cc": "index.js"
+	},
+	"description": "Creates components from template"
 }
