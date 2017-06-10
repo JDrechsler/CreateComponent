@@ -2,6 +2,7 @@
 import * as fs from 'fs'
 import * as fsa from 'async-file'
 import * as ncp from 'ncp'
+import * as path from 'path'
 
 var isTestMode: boolean = false
 
@@ -14,7 +15,7 @@ if (isTestMode) {
 	args = ["C:\node\node.exe", "C:\Users\DREC006.ASYSOFFICE\Documents\NodeJS\CreateComponent\CreateComponent.ts"]
 	args.push("cCsdZT")
 } else {
-	console.log("---Normal Mode---")
+	console.log("---Normal Mode V1.0.0---")
 	args = process.argv /*?*/
 	// args.forEach(element => {
 	// 	console.log(element)
@@ -39,10 +40,9 @@ if (componentName.match(regCheckCompName)/*?*/) {
 
 function createComponent(compName: string) {
 	var componentLocation: string = `${executionPath}/${componentName}` /*?*/
-	console.log(`Erstellt wird Component ${componentName} im Ordner ${componentLocation}.`)
+	console.log(`Erstellt wird Component ${componentName} im Ordner ${executionPath}.`)
 	var source: string = `${__dirname}\\Template`
 	copyTemplate(source, componentLocation)
-	console.log('Script successfully ended.')
 }
 
 function copyTemplate(source: string, destination: string) {
@@ -53,22 +53,27 @@ function copyTemplate(source: string, destination: string) {
 		if (err) {
 			return console.error(err);
 		}
-		console.log('done!');
+		console.log('done copying template!');
 		replaceTemplateStrings(destination, componentName)
 	});
+	replaceTemplateStrings(destination, componentName)
 
 }
 
 async function replaceTemplateStrings(destination: string, compName: string) {
 	var files = await fsa.readdir(destination)
 	for (var index = 0; index < files.length; index++) {
-		var file = files[index]/*?*/
-		var filePath = `${destination}/${file}`
+		var file = files[index]//Template.html /*?*/
+		var fileExt = path.extname(file)//.html /*?*/
+		var filePath = `${destination}/${file}`//....\Template\Template.html /*?*/
 		var newFileContent = await fsa.readFile(filePath, "utf8")/*?*/
 		newFileContent = newFileContent.replace(/Template/g, compName)/*?*/
-		fs.writeFileSync(filePath, newFileContent, 'utf8')
-		console.log(`Created: ${filePath}.`)
+		var newFilePath = `${executionPath}\\${compName}\\${compName}${fileExt}`/*?*/
+		await fsa.writeFile(filePath, newFileContent, 'utf8')
+		await fsa.rename(filePath, newFilePath)
+		console.log(`Created: ${newFilePath}.`)
 	}
+	console.log('Script successfully ended.')
 }
 
 function fsExistsSync(myDir) {

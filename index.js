@@ -39,6 +39,7 @@ exports.__esModule = true;
 var fs = require("fs");
 var fsa = require("async-file");
 var ncp = require("ncp");
+var path = require("path");
 var isTestMode = false;
 var executionPath = process.cwd();
 var args;
@@ -48,7 +49,7 @@ if (isTestMode) {
     args.push("cCsdZT");
 }
 else {
-    console.log("---Normal Mode---");
+    console.log("---Normal Mode V1.0.0---");
     args = process.argv; /*?*/
     // args.forEach(element => {
     // 	console.log(element)
@@ -70,10 +71,9 @@ else {
 }
 function createComponent(compName) {
     var componentLocation = executionPath + "/" + componentName; /*?*/
-    console.log("Erstellt wird Component " + componentName + " im Ordner " + componentLocation + ".");
+    console.log("Erstellt wird Component " + componentName + " im Ordner " + executionPath + ".");
     var source = __dirname + "\\Template";
     copyTemplate(source, componentLocation);
-    console.log('Script successfully ended.');
 }
 function copyTemplate(source, destination) {
     destination; /*?*/
@@ -82,13 +82,14 @@ function copyTemplate(source, destination) {
         if (err) {
             return console.error(err);
         }
-        console.log('done!');
+        console.log('done copying template!');
         replaceTemplateStrings(destination, componentName);
     });
+    replaceTemplateStrings(destination, componentName);
 }
 function replaceTemplateStrings(destination, compName) {
     return __awaiter(this, void 0, void 0, function () {
-        var files, index, file, filePath, newFileContent;
+        var files, index, file, fileExt, filePath, newFileContent, newFilePath;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, fsa.readdir(destination)];
@@ -97,20 +98,32 @@ function replaceTemplateStrings(destination, compName) {
                     index = 0;
                     _a.label = 2;
                 case 2:
-                    if (!(index < files.length)) return [3 /*break*/, 5];
-                    file = files[index] /*?*/;
-                    filePath = destination + "/" + file;
+                    if (!(index < files.length)) return [3 /*break*/, 7];
+                    file = files[index] //Template.html /*?*/
+                    ;
+                    fileExt = path.extname(file) //.html /*?*/
+                    ;
+                    filePath = destination + "/" + file //....\Template\Template.html /*?*/
+                    ;
                     return [4 /*yield*/, fsa.readFile(filePath, "utf8")]; /*?*/
                 case 3:
                     newFileContent = _a.sent() /*?*/;
                     newFileContent = newFileContent.replace(/Template/g, compName); /*?*/
-                    fs.writeFileSync(filePath, newFileContent, 'utf8');
-                    console.log("Created: " + filePath + ".");
-                    _a.label = 4;
+                    newFilePath = executionPath + "\\" + compName + "\\" + compName + fileExt /*?*/;
+                    return [4 /*yield*/, fsa.writeFile(filePath, newFileContent, 'utf8')];
                 case 4:
+                    _a.sent();
+                    return [4 /*yield*/, fsa.rename(filePath, newFilePath)];
+                case 5:
+                    _a.sent();
+                    console.log("Created: " + newFilePath + ".");
+                    _a.label = 6;
+                case 6:
                     index++;
                     return [3 /*break*/, 2];
-                case 5: return [2 /*return*/];
+                case 7:
+                    console.log('Script successfully ended.');
+                    return [2 /*return*/];
             }
         });
     });
