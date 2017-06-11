@@ -2,9 +2,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 
 @Component({
-	template: `<section>
-	<h2>Template-Component</h2>
-</section>`
+	template: require("./Template.html")
 })
 export default class Template extends Vue {
 
